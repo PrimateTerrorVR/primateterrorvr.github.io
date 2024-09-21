@@ -136,6 +136,28 @@
             right: -130px; /* Positioned to the right of About Me */
         }
 
+        .show-info {
+            margin-top: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        .info-box {
+            display: none;
+            padding: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #ffd700;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: left;
+            font-size: 0.9em;
+            color: #f0f0f0;
+        }
+
         .burst {
             position: absolute;
             top: 50%;
@@ -168,6 +190,25 @@
             height: 100%;
             pointer-events: none; /* Allows clicks to go through */
         }
+
+        .rarity-common {
+            color: grey;
+        }
+        .rarity-uncommon {
+            color: green;
+        }
+        .rarity-rare {
+            color: blue;
+        }
+        .rarity-epic {
+            color: purple;
+        }
+        .rarity-legendary {
+            color: orange;
+        }
+        .rarity-mythic {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -191,62 +232,82 @@
         <!-- Emoji Pack -->
         <div class="pack emoji-pack" id="emojiPack">
             Emoji Pack
+            <button class="show-info" onclick="toggleInfo('emojiInfo')">Show Info</button>
+            <div class="info-box" id="emojiInfo">
+                <p><strong>Rarities:</strong></p>
+                <p class="rarity-common">Common: 😊 😋 😍</p>
+                <p class="rarity-uncommon">Uncommon: 🤩 😎 🤑</p>
+                <p class="rarity-rare">Rare: 🤖 👽 🦄</p>
+                <p class="rarity-epic">Epic: 😈 👻 💀</p>
+                <p class="rarity-legendary">Legendary: 🌟 🎉 🏆</p>
+                <p class="rarity-mythic">Mythic: 💎 🥇 🔥</p>
+            </div>
         </div>
         
         <!-- Fruit Pack -->
         <div class="pack fruit-pack" id="fruitPack">
             Fruit Pack
+            <button class="show-info" onclick="toggleInfo('fruitInfo')">Show Info</button>
+            <div class="info-box" id="fruitInfo">
+                <p><strong>Rarities:</strong></p>
+                <p class="rarity-common">Common: 🍎 🍌 🍇</p>
+                <p class="rarity-uncommon">Uncommon: 🍓 🍒 🍍</p>
+                <p class="rarity-rare">Rare: 🍑 🍉 🍊</p>
+                <p class="rarity-epic">Epic: 🍋 🍈 🍏</p>
+                <p class="rarity-legendary">Legendary: 🍉 🍇 🍍</p>
+                <p class="rarity-mythic">Mythic: 🍋 🍑 🍒</p>
+            </div>
         </div>
 
         <div class="social-links">
-            <a href="https://www.youtube.com" target="_blank">
-                <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
-            </a>
-            <a href="https://discord.com" target="_blank">
-                <img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="Discord">
-            </a>
-            <a href="https://www.reddit.com" target="_blank">
-                <img src="https://images.squarespace-cdn.com/content/v1/5c5554d316b64061c6f8a20d/1630949829757-WXNOUZ8R4QQCXMIY4YMG/What-Is-The-Reddit-Logo-Called.png" alt="Reddit">
-            </a>
-            <a href="https://github.com" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
-            </a>
+            <a href="#"><img src="youtube-logo.png" alt="YouTube"></a>
+            <a href="#"><img src="twitter-logo.png" alt="Twitter"></a>
+            <a href="#"><img src="github-logo.png" alt="GitHub"></a>
         </div>
 
         <div class="tech-logos">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png" alt="HTML5">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Lua-Logo.svg/947px-Lua-Logo.svg.png" alt="Lua">
+            <img src="html-logo.png" alt="HTML">
+            <img src="css-logo.png" alt="CSS">
+            <img src="js-logo.png" alt="JavaScript">
+            <img src="react-logo.png" alt="React">
+            <img src="nodejs-logo.png" alt="Node.js">
+        </div>
+
+        <div class="footer">
+            &copy; 2024 Lemon. All rights reserved.
         </div>
     </div>
 
-    <div class="footer">
-        <p>© 2024 Lemon. All rights reserved.</p>
-    </div>
-
     <script>
-        // Particle Animation
+        // Toggle Rarity Info Box
+        function toggleInfo(infoId) {
+            const infoBox = document.getElementById(infoId);
+            if (infoBox.style.display === 'none' || infoBox.style.display === '') {
+                infoBox.style.display = 'block';
+            } else {
+                infoBox.style.display = 'none';
+            }
+        }
+
+        // Particle Effect
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         let particles = [];
 
         class Particle {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.size = Math.random() * 5 + 2; // Size between 2 and 7
+                this.size = Math.random() * 5 + 2;
                 this.speedX = (Math.random() * 3) - 1.5;
                 this.speedY = (Math.random() * 3) - 1.5;
                 this.color = 'rgba(255, 223, 0, 1)';
             }
 
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                this.y += this.speedY; // Falling from the top
                 this.size -= 0.1;
                 if (this.size < 0) this.size = 0;
             }
@@ -286,12 +347,12 @@
 
         // Pack Event Listeners
         document.getElementById('emojiPack').addEventListener('click', function(event) {
-            burstParticles(event.clientX, event.clientY);
+            burstParticles(event.clientX, event.clientY - 50); // Falling from above
             // Add code to handle the Emoji Pack opening animation here
         });
 
         document.getElementById('fruitPack').addEventListener('click', function(event) {
-            burstParticles(event.clientX, event.clientY);
+            burstParticles(event.clientX, event.clientY - 50); // Falling from above
             // Add code to handle the Fruit Pack opening animation here
         });
 
