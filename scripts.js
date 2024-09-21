@@ -6,7 +6,7 @@
 
     // Function to fetch messages from GitHub
     async function fetchMessages() {
-        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/messages.json');
+        const response = await fetch('https://raw.githubusercontent.com/primateterrorvr/primateterrorvr.github.io/main/messages.json');
         const messages = await response.json();
         chatBox.innerHTML = '';
         messages.forEach(msg => {
@@ -16,19 +16,19 @@
 
     // Function to send a message to GitHub
     async function sendMessage(username, message) {
-        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/messages.json');
+        const response = await fetch('https://raw.githubusercontent.com/primateterrorvr/primateterrorvr.github.io/main/messages.json');
         const messages = await response.json();
         const updatedMessages = [...messages, { username, message }];
-        const putResponse = await fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO_NAME/contents/messages.json', {
+        const putResponse = await fetch('https://api.github.com/repos/primateterrorvr/primateterrorvr.github.io/contents/messages.json', {
             method: 'PUT',
             headers: {
-                'Authorization': 'token YOUR_GITHUB_TOKEN',
+                'Authorization': 'token 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',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 message: 'Update messages',
                 content: btoa(JSON.stringify(updatedMessages)),
-                sha: 'CURRENT_SHA' // Replace with the current SHA of messages.json
+                sha: '8cd23b37cfd832878bd090920cdab10d34ad5f73' // Replace with the current SHA of messages.json
             })
         });
         return putResponse.ok;
