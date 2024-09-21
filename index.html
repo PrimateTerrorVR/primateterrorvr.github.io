@@ -9,8 +9,8 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9; /* Light background */
-            color: #333;
+            background-color: #121212; /* Dark background */
+            color: #f0f0f0; /* Light text */
             overflow-x: hidden;
             position: relative;
         }
@@ -19,11 +19,11 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #4caf50; /* Green banner */
+            background-color: #1a1a1a; /* Darker banner */
             padding: 15px 0;
             text-align: center;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
             cursor: pointer;
         }
 
@@ -39,14 +39,14 @@
             padding: 20px;
             max-width: 800px;
             margin: auto;
-            background-color: #fff;
+            background-color: #1e1e1e; /* Dark content background */
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
         h2 {
-            color: #4caf50; /* Green headings */
+            color: #ffcc00; /* Gold headings */
             margin-bottom: 10px;
         }
 
@@ -61,7 +61,7 @@
             height: 150px;
             border-radius: 50%;
             margin: 20px 0;
-            border: 3px solid #4caf50; /* Green border */
+            border: 3px solid #ffd700; /* Yellow border */
         }
 
         .social-links {
@@ -154,8 +154,8 @@
     </div>
 
     <div class="content" id="content">
-        <img src="standard.gif" alt="Profile Picture" class="profile-pic" id="profilePic">
         <h2>About Me</h2>
+        <img src="standard.gif" alt="Profile Picture" class="profile-pic" id="profilePic">
         <p>
             Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
             I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
@@ -187,18 +187,18 @@
     <button class="settings-btn" id="settingsBtn">⚙️</button>
     <div class="settings-menu" id="settingsMenu">
         <label for="bgColor">Background Color:</label>
-        <input type="color" id="bgColor" value="#f9f9f9">
+        <input type="color" id="bgColor" value="#121212">
         <label for="bannerColor">Banner Color:</label>
-        <input type="color" id="bannerColor" value="#4caf50">
+        <input type="color" id="bannerColor" value="#1a1a1a">
         <label for="contentColor">Content Background Color:</label>
-        <input type="color" id="contentColor" value="#ffffff">
+        <input type="color" id="contentColor" value="#1e1e1e">
         <label for="textColor">Text Color:</label>
-        <input type="color" id="textColor" value="#333333">
+        <input type="color" id="textColor" value="#f0f0f0">
     </div>
 
     <script>
         function createParticles(x, y, color = 'yellow') {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 15; i++) {
                 const dot = document.createElement("div");
                 dot.className = "dot";
                 dot.style.left = `${x + (Math.random() * 20 - 10)}px`;
@@ -209,7 +209,9 @@
                 dot.style.transition = 'transform 0.5s, opacity 0.5s';
                 document.body.appendChild(dot);
                 setTimeout(() => {
-                    dot.style.transform = `translateY(100vh)`;
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = Math.random() * 200;
+                    dot.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
                     dot.style.opacity = '0';
                 }, 0);
                 setTimeout(() => {
@@ -219,23 +221,7 @@
         }
 
         function explodeParticles(x, y) {
-            for (let i = 0; i < 30; i++) {
-                const dot = document.createElement("div");
-                dot.className = "dot";
-                dot.style.left = `${x}px`;
-                dot.style.top = `${y}px`;
-                dot.style.backgroundColor = 'yellow';
-                dot.style.width = `${Math.random() * 10 + 5}px`;
-                dot.style.height = dot.style.width;
-                const angle = Math.random() * 2 * Math.PI;
-                const distance = Math.random() * 100;
-                dot.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-                dot.style.animation = 'explode 0.5s forwards';
-                document.body.appendChild(dot);
-                setTimeout(() => {
-                    dot.remove();
-                }, 500);
-            }
+            createParticles(x, y);
         }
 
         const profilePic = document.getElementById('profilePic');
