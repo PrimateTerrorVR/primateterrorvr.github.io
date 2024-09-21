@@ -50,6 +50,7 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             text-align: center;
+            position: relative; /* Added position relative for packs */
         }
 
         h2 {
@@ -63,17 +64,6 @@
             margin-bottom: 15px;
         }
 
-        .button {
-            padding: 10px 20px;
-            background-color: #ffcc00; /* Gold button */
-            border: none;
-            border-radius: 5px;
-            color: #121212;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 10px;
-        }
-
         .profile-pic {
             width: 150px;
             height: 150px;
@@ -84,11 +74,90 @@
             z-index: 1; /* Above particles */
         }
 
+        .social-links {
+            margin-top: 30px;
+        }
+
+        .social-links img {
+            width: 50px;
+            height: 50px;
+            margin: 0 15px;
+            transition: transform 0.3s;
+        }
+
+        .social-links img:hover {
+            transform: scale(1.2);
+        }
+
+        .tech-logos {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tech-logos img {
+            width: 40px; /* Smaller size for tech logos */
+            height: 40px;
+            margin: 0 10px;
+        }
+
         .footer {
             margin-top: 50px;
             text-align: center;
             font-size: 0.9em;
             color: #aaa;
+        }
+
+        .pack {
+            width: 100px;
+            height: 150px;
+            border: 2px solid #ffd700;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            display: inline-block;
+            cursor: pointer;
+            margin: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: absolute; /* Position for animation */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Center vertically */
+            text-align: center;
+            line-height: 1.4;
+            padding-top: 10px;
+            color: #ffd700;
+        }
+
+        .emoji-pack {
+            left: -130px; /* Positioned to the left of About Me */
+        }
+
+        .fruit-pack {
+            right: -130px; /* Positioned to the right of About Me */
+        }
+
+        .burst {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: yellow;
+            border-radius: 50%;
+            animation: burst 1s forwards ease-out;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes burst {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(5);
+                opacity: 0;
+            }
         }
 
         canvas {
@@ -115,46 +184,71 @@
             Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
             I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
         </p>
+        <p>
+            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals. Feel free to check out my social media links below!
+        </p>
 
-        <!-- Buttons for Packs -->
-        <button class="button" id="emojiPackBtn">Open Emoji Pack</button>
-        <button class="button" id="fruitPackBtn">Open Fruit Pack</button>
+        <!-- Emoji Pack -->
+        <div class="pack emoji-pack" id="emojiPack">
+            Emoji Pack
+        </div>
+        
+        <!-- Fruit Pack -->
+        <div class="pack fruit-pack" id="fruitPack">
+            Fruit Pack
+        </div>
 
-        <div class="footer">
-            <p>© 2024 Lemon. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://www.youtube.com" target="_blank">
+                <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
+            </a>
+            <a href="https://discord.com" target="_blank">
+                <img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="Discord">
+            </a>
+            <a href="https://www.reddit.com" target="_blank">
+                <img src="https://images.squarespace-cdn.com/content/v1/5c5554d316b64061c6f8a20d/1630949829757-WXNOUZ8R4QQCXMIY4YMG/What-Is-The-Reddit-Logo-Called.png" alt="Reddit">
+            </a>
+            <a href="https://github.com" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+            </a>
+        </div>
+
+        <div class="tech-logos">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png" alt="HTML5">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Lua-Logo.svg/947px-Lua-Logo.svg.png" alt="Lua">
         </div>
     </div>
 
+    <div class="footer">
+        <p>© 2024 Lemon. All rights reserved.</p>
+    </div>
+
     <script>
+        // Particle Animation
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let particles = [];
-        const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🥰', '😍', '😎', '😜', '😺'];
-        const fruits = ['🍎', '🍌', '🍉', '🍓', '🍍', '🍇', '🍈', '🍊', '🍋', '🍒', '🥭', '🍑', '🥥', '🥝'];
 
         class Particle {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
                 this.size = Math.random() * 5 + 2; // Size between 2 and 7
-                this.speedY = Math.random() * 1 + 1; // Speed between 1 and 2
-                this.color = 'rgba(255, 255, 255, 0.8)'; // White color
-                this.speedX = Math.random() < 0.5 ? -1 : 1; // Random horizontal speed
+                this.speedX = (Math.random() * 3) - 1.5;
+                this.speedY = (Math.random() * 3) - 1.5;
+                this.color = 'rgba(255, 223, 0, 1)';
             }
 
             update() {
+                this.x += this.speedX;
                 this.y += this.speedY;
-
-                // Reset particle position if it goes off-screen
-                if (this.y > canvas.height) {
-                    this.y = 0; // Reset to top
-                    this.x = Math.random() * canvas.width; // Random x position
-                }
-
-                this.draw();
+                this.size -= 0.1;
+                if (this.size < 0) this.size = 0;
             }
 
             draw() {
@@ -165,50 +259,47 @@
             }
         }
 
-        function initParticles(count, x, y) {
-            for (let i = 0; i < count; i++) {
-                const particle = new Particle(x, y);
-                particles.push(particle);
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.3) {
+                    particles.splice(i, 1);
+                    i--;
+                }
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => {
-                particle.update();
-            });
+            handleParticles();
             requestAnimationFrame(animate);
         }
 
-        window.addEventListener('resize', () => {
+        animate();
+
+        function burstParticles(x, y) {
+            for (let i = 0; i < 20; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        // Pack Event Listeners
+        document.getElementById('emojiPack').addEventListener('click', function(event) {
+            burstParticles(event.clientX, event.clientY);
+            // Add code to handle the Emoji Pack opening animation here
+        });
+
+        document.getElementById('fruitPack').addEventListener('click', function(event) {
+            burstParticles(event.clientX, event.clientY);
+            // Add code to handle the Fruit Pack opening animation here
+        });
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', function() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
-
-        function burstPack(pack) {
-            const packEmojis = pack === 'emoji' ? emojis : fruits;
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-
-            packEmojis.forEach(emoji => {
-                const emojiX = x + (Math.random() * 100 - 50);
-                const emojiY = y + (Math.random() * 100 - 50);
-                ctx.font = '24px Arial';
-                ctx.fillText(emoji, emojiX, emojiY);
-                initParticles(30, emojiX, emojiY); // Create particles at emoji location
-            });
-        }
-
-        document.getElementById('emojiPackBtn').addEventListener('click', () => {
-            burstPack('emoji');
-        });
-
-        document.getElementById('fruitPackBtn').addEventListener('click', () => {
-            burstPack('fruit');
-        });
-
-        init();
-        animate();
     </script>
 </body>
 </html>
