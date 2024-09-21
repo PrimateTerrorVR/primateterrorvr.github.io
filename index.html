@@ -12,7 +12,6 @@
             background-color: #121212; /* Dark background */
             color: #f0f0f0; /* Light text */
             overflow: hidden; /* Hide scrollbars */
-            position: relative;
         }
 
         .top-bar {
@@ -50,7 +49,6 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             text-align: center;
-            position: relative; /* Added position relative for packs */
         }
 
         h2 {
@@ -70,8 +68,6 @@
             border-radius: 50%;
             margin: 20px 0;
             border: 3px solid #ffd700; /* Yellow border */
-            position: relative; /* Position relative for particle collision */
-            z-index: 1; /* Above particles */
         }
 
         .social-links {
@@ -110,18 +106,15 @@
         }
 
         .pack {
-            width: 100px;
-            height: 150px;
+            width: 120px;
+            height: 180px;
             border: 2px solid #ffd700;
-            background-color: #1e1e1e;
+            background-color: #2b2b2b;
             border-radius: 10px;
             display: inline-block;
             cursor: pointer;
             margin: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            position: absolute; /* Position for animation */
-            top: 50%; /* Center vertically */
-            transform: translateY(-50%); /* Center vertically */
             text-align: center;
             line-height: 1.4;
             padding-top: 10px;
@@ -129,11 +122,11 @@
         }
 
         .emoji-pack {
-            left: -130px; /* Positioned to the left of About Me */
+            margin-left: 0; /* Positioned left of About Me */
         }
 
         .fruit-pack {
-            right: -130px; /* Positioned to the right of About Me */
+            margin-right: 0; /* Positioned right of About Me */
         }
 
         .show-info {
@@ -255,112 +248,91 @@
                 <p class="rarity-rare">Rare: 🍑 🍉 🍊</p>
                 <p class="rarity-epic">Epic: 🍋 🍈 🍏</p>
                 <p class="rarity-legendary">Legendary: 🍉 🍇 🍍</p>
-                <p class="rarity-mythic">Mythic: 🍋 🍑 🍒</p>
+                <p class="rarity-mythic">Mythic: 🍒 🍓 🍏</p>
             </div>
         </div>
 
         <div class="social-links">
-            <a href="#"><img src="youtube-logo.png" alt="YouTube"></a>
-            <a href="#"><img src="twitter-logo.png" alt="Twitter"></a>
             <a href="#"><img src="github-logo.png" alt="GitHub"></a>
-        </div>
-
-        <div class="tech-logos">
-            <img src="html-logo.png" alt="HTML">
-            <img src="css-logo.png" alt="CSS">
-            <img src="js-logo.png" alt="JavaScript">
-            <img src="react-logo.png" alt="React">
-            <img src="nodejs-logo.png" alt="Node.js">
-        </div>
-
-        <div class="footer">
-            &copy; 2024 Lemon. All rights reserved.
+            <a href="#"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+            <a href="#"><img src="twitter-logo.png" alt="Twitter"></a>
         </div>
     </div>
 
+    <div class="footer" id="footer">
+        &copy; 2024 Lemon. All rights reserved.
+    </div>
+
     <script>
-        // Toggle Rarity Info Box
         function toggleInfo(infoId) {
-            const infoBox = document.getElementById(infoId);
-            if (infoBox.style.display === 'none' || infoBox.style.display === '') {
-                infoBox.style.display = 'block';
+            var infoBox = document.getElementById(infoId);
+            if (infoBox.style.display === "block") {
+                infoBox.style.display = "none";
             } else {
-                infoBox.style.display = 'none';
+                infoBox.style.display = "block";
             }
         }
 
-        // Particle Effect
+        // Particle burst effect
+        document.body.addEventListener('click', function(event) {
+            var burst = document.createElement('div');
+            burst.className = 'burst';
+            burst.style.left = event.clientX + 'px';
+            burst.style.top = event.clientY + 'px';
+            document.body.appendChild(burst);
+            setTimeout(function() {
+                document.body.removeChild(burst);
+            }, 1000);
+        });
+
+        // Particle animation for the background
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
         let particles = [];
 
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 5 + 2;
-                this.speedX = (Math.random() * 3) - 1.5;
-                this.speedY = (Math.random() * 3) - 1.5;
-                this.color = 'rgba(255, 223, 0, 1)';
-            }
-
-            update() {
-                this.y += this.speedY; // Falling from the top
-                this.size -= 0.1;
-                if (this.size < 0) this.size = 0;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function handleParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].size <= 0.3) {
-                    particles.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            handleParticles();
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        function burstParticles(x, y) {
-            for (let i = 0; i < 20; i++) {
-                particles.push(new Particle(x, y));
-            }
-        }
-
-        // Pack Event Listeners
-        document.getElementById('emojiPack').addEventListener('click', function(event) {
-            burstParticles(event.clientX, event.clientY - 50); // Falling from above
-            // Add code to handle the Emoji Pack opening animation here
-        });
-
-        document.getElementById('fruitPack').addEventListener('click', function(event) {
-            burstParticles(event.clientX, event.clientY - 50); // Falling from above
-            // Add code to handle the Fruit Pack opening animation here
-        });
-
-        // Resize canvas on window resize
-        window.addEventListener('resize', function() {
+        function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-        });
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3,
+                color: `rgba(255, 255, 255, ${Math.random()})`,
+                speedX: (Math.random() - 0.5) * 2,
+                speedY: (Math.random() - 0.5) * 2
+            };
+        }
+
+        function updateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+                    particles[index] = createParticle();
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.closePath();
+            });
+            requestAnimationFrame(updateParticles);
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(createParticle());
+        }
+        
+        updateParticles();
     </script>
 </body>
 </html>
