@@ -244,13 +244,63 @@
         </div>
     </div>
 
-<div class="chat-container" id="chatContainer">
-    <h2>Live Chat</h2>
-    <div class="chat-box" id="chatBox"></div>
-    <div class="chat-input">
-        <input type="text" id="username" placeholder="Enter your username" />
-        <input type="text" id="message" placeholder="Type your message" disabled />
-        <button id="sendBtn" disabled>Send</button>
+<div id="chatBox"></div>
+<input type="text" id="username" placeholder="Enter your username" />
+<input type="text" id="message" placeholder="Type your message" />
+<button id="sendBtn">Send</button>
+
+<script>
+    const chatBox = document.getElementById("chatBox");
+    const usernameInput = document.getElementById("username");
+    const messageInput = document.getElementById("message");
+    const sendBtn = document.getElementById("sendBtn");
+
+    // Function to fetch messages
+    async function fetchMessages() {
+        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/messages.json');
+        const messages = await response.json();
+        chatBox.innerHTML = ''; // Clear current chat
+        messages.forEach(msg => {
+            const chatMessage = document.createElement("div");
+            chatMessage.textContent = `${msg.username}: ${msg.message}`;
+            chatBox.appendChild(chatMessage);
+        });
+    }
+
+    // Function to send message
+    sendBtn.addEventListener("click", async () => {
+        const username = usernameInput.value.trim();
+        const message = messageInput.value.trim();
+        if (username && message) {
+            const newMessage = { username, message };
+            const messages = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/messages.json')
+                .then(res => res.json());
+
+            messages.push(newMessage);
+            const updatedContent = btoa(JSON.stringify(messages));
+
+            await fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/messages.json', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token YOUR_PERSONAL_ACCESS_TOKEN', // Only for your use
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Update chat messages',
+                    content: updatedContent,
+                    sha: '8cd23b37cfd832878bd090920cdab10d34ad5f73' // Update this SHA when new messages are added
+                })
+            });
+
+            messageInput.value = ""; // Clear input
+            fetchMessages(); // Refresh chat
+        }
+    });
+
+    // Fetch messages on load
+    fetchMessages();
+</script>
+
     </div>
 </div>
 
