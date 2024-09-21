@@ -63,6 +63,17 @@
             margin-bottom: 15px;
         }
 
+        .button {
+            padding: 10px 20px;
+            background-color: #ffcc00; /* Gold button */
+            border: none;
+            border-radius: 5px;
+            color: #121212;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+        }
+
         .profile-pic {
             width: 150px;
             height: 150px;
@@ -71,34 +82,6 @@
             border: 3px solid #ffd700; /* Yellow border */
             position: relative; /* Position relative for particle collision */
             z-index: 1; /* Above particles */
-        }
-
-        .social-links {
-            margin-top: 30px;
-        }
-
-        .social-links img {
-            width: 50px;
-            height: 50px;
-            margin: 0 15px;
-            transition: transform 0.3s;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-        }
-
-        .tech-logos {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .tech-logos img {
-            width: 40px; /* Smaller size for tech logos */
-            height: 40px;
-            margin: 0 10px;
         }
 
         .footer {
@@ -132,35 +115,14 @@
             Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
             I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
         </p>
-        <p>
-            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals. Feel free to check out my social media links below!
-        </p>
-        
-        <div class="social-links">
-            <a href="https://www.youtube.com" target="_blank">
-                <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
-            </a>
-            <a href="https://discord.com" target="_blank">
-                <img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="Discord">
-            </a>
-            <a href="https://www.reddit.com" target="_blank">
-                <img src="https://images.squarespace-cdn.com/content/v1/5c5554d316b64061c6f8a20d/1630949829757-WXNOUZ8R4QQCXMIY4YMG/What-Is-The-Reddit-Logo-Called.png" alt="Reddit">
-            </a>
-            <a href="https://github.com" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
-            </a>
-        </div>
 
-        <div class="tech-logos">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png" alt="HTML5">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Lua-Logo.svg/947px-Lua-Logo.svg.png" alt="Lua">
-        </div>
-    </div>
+        <!-- Buttons for Packs -->
+        <button class="button" id="emojiPackBtn">Open Emoji Pack</button>
+        <button class="button" id="fruitPackBtn">Open Fruit Pack</button>
 
-    <div class="footer">
-        <p>© 2024 Lemon. All rights reserved.</p>
+        <div class="footer">
+            <p>© 2024 Lemon. All rights reserved.</p>
+        </div>
     </div>
 
     <script>
@@ -170,6 +132,8 @@
         canvas.height = window.innerHeight;
 
         let particles = [];
+        const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🥰', '😍', '😎', '😜', '😺'];
+        const fruits = ['🍎', '🍌', '🍉', '🍓', '🍍', '🍇', '🍈', '🍊', '🍋', '🍒', '🥭', '🍑', '🥥', '🥝'];
 
         class Particle {
             constructor(x, y) {
@@ -184,15 +148,6 @@
             update() {
                 this.y += this.speedY;
 
-                // Check for bounce
-                const profilePic = document.getElementById('profilePic');
-                const rect = profilePic.getBoundingClientRect();
-
-                // Check collision with the profile picture
-                if (this.x > rect.left && this.x < rect.right && this.y > rect.top && this.y < rect.bottom) {
-                    this.bounceAway(rect);
-                }
-
                 // Reset particle position if it goes off-screen
                 if (this.y > canvas.height) {
                     this.y = 0; // Reset to top
@@ -200,15 +155,6 @@
                 }
 
                 this.draw();
-            }
-
-            bounceAway(rect) {
-                // Calculate angle of collision
-                const angle = Math.atan2(this.y - (rect.top + rect.height / 2), this.x - (rect.left + rect.width / 2));
-                this.speedX = Math.cos(angle) * 2; // Bounce away horizontally
-                this.speedY = -Math.abs(Math.sin(angle) * 2); // Bounce away vertically
-                this.x += this.speedX;
-                this.y += this.speedY;
             }
 
             draw() {
@@ -219,9 +165,10 @@
             }
         }
 
-        function init() {
-            for (let i = 0; i < 100; i++) { // Number of particles
-                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+        function initParticles(count, x, y) {
+            for (let i = 0; i < count; i++) {
+                const particle = new Particle(x, y);
+                particles.push(particle);
             }
         }
 
@@ -236,6 +183,28 @@
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+        });
+
+        function burstPack(pack) {
+            const packEmojis = pack === 'emoji' ? emojis : fruits;
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+
+            packEmojis.forEach(emoji => {
+                const emojiX = x + (Math.random() * 100 - 50);
+                const emojiY = y + (Math.random() * 100 - 50);
+                ctx.font = '24px Arial';
+                ctx.fillText(emoji, emojiX, emojiY);
+                initParticles(30, emojiX, emojiY); // Create particles at emoji location
+            });
+        }
+
+        document.getElementById('emojiPackBtn').addEventListener('click', () => {
+            burstPack('emoji');
+        });
+
+        document.getElementById('fruitPackBtn').addEventListener('click', () => {
+            burstPack('fruit');
         });
 
         init();
