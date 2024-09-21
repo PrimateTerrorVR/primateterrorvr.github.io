@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             background-color: #121212; /* Dark background */
             color: #f0f0f0; /* Light text */
-            overflow-x: hidden;
+            overflow: hidden; /* Hide scrollbars */
             position: relative;
         }
 
@@ -69,6 +69,8 @@
             border-radius: 50%;
             margin: 20px 0;
             border: 3px solid #ffd700; /* Yellow border */
+            position: relative; /* Position relative for particle collision */
+            z-index: 1; /* Above particles */
         }
 
         .social-links {
@@ -93,126 +95,19 @@
             color: #aaa;
         }
 
-        .chat-container {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            text-align: left;
-        }
-
-        .chat-box {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .chat-input {
-            display: flex;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #555;
-            color: #fff;
-        }
-
-        .chat-input button {
-            padding: 10px;
-            margin-left: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4caf50;
-            color: white;
-            cursor: pointer;
-        }
-
-        .chat-input button:hover {
-            background-color: #45a049;
-        }
-
-        .code-input {
+        canvas {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-        }
-
-        .code-input input {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #555;
-            color: #fff;
-            margin-right: 5px;
-        }
-
-        .settings-btn {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: #4caf50; /* Green settings button */
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 1002;
-            display: none; /* Hidden by default */
-        }
-
-        .settings-menu {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            display: none; /* Hidden by default */
-            z-index: 1001;
-        }
-
-        .settings-menu label {
-            display: block;
-            margin: 10px 0;
-            color: #fff;
-        }
-
-        .settings-menu input {
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #555;
-            color: #fff;
-        }
-
-        .owner-menu {
-            display: none; /* Hidden by default */
-        }
-
-        .owner-menu h3 {
-            color: #ffcc00; /* Gold heading */
+            height: 100%;
+            pointer-events: none; /* Allows clicks to go through */
         }
     </style>
 </head>
 <body>
+    <canvas id="particleCanvas"></canvas>
+
     <div class="top-bar" id="topBar">
         <h1 class="glowing-lemon" id="lemonTitle">🍋 Lemon 🍋</h1>
     </div>
@@ -244,202 +139,71 @@
         </div>
     </div>
 
-<div id="chatBox"></div>
-<input type="text" id="username" placeholder="Enter your username" />
-<input type="text" id="message" placeholder="Type your message" />
-<button id="sendBtn">Send</button>
-
-<script>
-    const chatBox = document.getElementById("chatBox");
-    const usernameInput = document.getElementById("username");
-    const messageInput = document.getElementById("message");
-    const sendBtn = document.getElementById("sendBtn");
-
-    // Function to fetch messages
-    async function fetchMessages() {
-        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/messages.json');
-        const messages = await response.json();
-        chatBox.innerHTML = ''; // Clear current chat
-        messages.forEach(msg => {
-            const chatMessage = document.createElement("div");
-            chatMessage.textContent = `${msg.username}: ${msg.message}`;
-            chatBox.appendChild(chatMessage);
-        });
-    }
-
-    // Function to send message
-    sendBtn.addEventListener("click", async () => {
-        const username = usernameInput.value.trim();
-        const message = messageInput.value.trim();
-        if (username && message) {
-            const newMessage = { username, message };
-            const messages = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/messages.json')
-                .then(res => res.json());
-
-            messages.push(newMessage);
-            const updatedContent = btoa(JSON.stringify(messages));
-
-            await fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/messages.json', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token YOUR_PERSONAL_ACCESS_TOKEN', // Only for your use
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Update chat messages',
-                    content: updatedContent,
-                    sha: '8cd23b37cfd832878bd090920cdab10d34ad5f73' // Update this SHA when new messages are added
-                })
-            });
-
-            messageInput.value = ""; // Clear input
-            fetchMessages(); // Refresh chat
-        }
-    });
-
-    // Fetch messages on load
-    fetchMessages();
-</script>
-
-    </div>
-</div>
-
-
     <div class="footer">
         <p>© 2024 Lemon. All rights reserved.</p>
     </div>
 
-    <div class="code-input">
-        <input type="text" id="codeInput" placeholder="Enter owner code" />
-        <button id="enterCode">Enter</button>
-    </div>
-
-    <button class="settings-btn" id="settingsBtn">⚙️</button>
-    <div class="settings-menu" id="settingsMenu">
-        <h3>Settings</h3>
-        <label for="bgColor">Background Color:</label>
-        <input type="color" id="bgColor" value="#121212">
-        <label for="bannerColor">Banner Color:</label>
-        <input type="color" id="bannerColor" value="#1a1a1a">
-        <label for="contentColor">Content Color:</label>
-        <input type="color" id="contentColor" value="#1e1e1e">
-        <label for="textColor">Text Color:</label>
-        <input type="color" id="textColor" value="#f0f0f0">
-    </div>
-
-    <div class="owner-menu" id="ownerMenu">
-        <h3>Owner Menu</h3>
-        <label for="ownerMessage">Owner Message:</label>
-        <input type="text" id="ownerMessage" placeholder="Type a message as owner">
-        <button id="sendOwnerMessage">Send</button>
-    </div>
-
     <script>
-        const ownerCode = 'LemonRed'; // The code for accessing owner features
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        document.getElementById('enterCode').addEventListener('click', function() {
-            const codeInput = document.getElementById('codeInput').value;
-            if (codeInput === ownerCode) {
-                document.getElementById('settingsBtn').style.display = 'block'; // Show settings button
-                document.getElementById('ownerMenu').style.display = 'block'; // Show owner menu
-            } else {
-                alert('Invalid code!'); // Alert if code is incorrect
+        let particles = [];
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 2; // Size between 2 and 7
+                this.speedY = Math.random() * 1 + 1; // Speed between 1 and 2
+                this.color = 'rgba(255, 255, 255, 0.8)'; // White color
             }
-            document.getElementById('codeInput').value = ''; // Clear the input
-        });
 
-        document.getElementById('settingsBtn').addEventListener('click', function() {
-            const menu = document.getElementById('settingsMenu');
-            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
-        });
+            update() {
+                this.y += this.speedY;
+                if (this.y > canvas.height) {
+                    this.y = 0; // Reset to top
+                    this.x = Math.random() * canvas.width; // Random x position
+                }
+                this.draw();
+            }
 
-        document.getElementById('bgColor').addEventListener('input', function() {
-            document.body.style.backgroundColor = this.value;
-        });
-
-        document.getElementById('bannerColor').addEventListener('input', function() {
-            document.getElementById('topBar').style.backgroundColor = this.value;
-        });
-
-        document.getElementById('contentColor').addEventListener('input', function() {
-            document.getElementById('content').style.backgroundColor = this.value;
-        });
-
-        document.getElementById('textColor').addEventListener('input', function() {
-            document.body.style.color = this.value;
-        });
-
-        document.getElementById('username').addEventListener('input', function() {
-            document.getElementById('message').disabled = this.value.trim() === '';
-            document.getElementById('sendBtn').disabled = this.value.trim() === '';
-        });
-
-        document.getElementById('sendBtn').addEventListener('click', function() {
-            const chatBox = document.getElementById('chatBox');
-            const username = document.getElementById('username').value;
-            const message = document.getElementById('message').value;
-            chatBox.innerHTML += `<strong>${username}:</strong> ${message}<br>`;
-            document.getElementById('message').value = '';
-        });
-
-        document.getElementById('sendOwnerMessage').addEventListener('click', function() {
-            const chatBox = document.getElementById('chatBox');
-            const ownerMessage = document.getElementById('ownerMessage').value;
-            chatBox.innerHTML += `<strong>Owner:</strong> ${ownerMessage}<br>`;
-            document.getElementById('ownerMessage').value = '';
-        });
-    </script>
-    <script>
-    const chatBox = document.getElementById("chatBox");
-    const usernameInput = document.getElementById("username");
-    const messageInput = document.getElementById("message");
-    const sendBtn = document.getElementById("sendBtn");
-
-    // Fetch messages from your GitHub file
-    async function fetchMessages() {
-        const response = await fetch('https://raw.githubusercontent.com/primateterrorvr/primateterrorvr.github.io/main/messages.json');
-        const messages = await response.json();
-        chatBox.innerHTML = messages.map(msg => `<strong>${msg.username}:</strong> ${msg.message}`).join('<br>');
-    }
-
-    // Send a message to GitHub
-    async function sendMessage(username, message) {
-        const response = await fetch('https://raw.githubusercontent.com/primateterrorvr/primateterrorvr.github.io/main/messages.json');
-        const messages = await response.json();
-        messages.push({ username, message });
-
-        // Update the messages.json file
-        const updateResponse = await fetch('https://api.github.com/repos/primateterrorvr/primateterrorvr.github.io/contents/messages.json', {
-            method: 'PUT',
-            headers: {
-                'Authorization': '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',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Update messages',
-                content: btoa(JSON.stringify(messages)),
-                sha: '8cd23b37cfd832878bd090920cdab10d34ad5f73' // Current SHA of messages.json
-            })
-        });
-        return updateResponse.ok;
-    }
-
-    // When the send button is clicked
-    sendBtn.addEventListener('click', async () => {
-        const username = usernameInput.value;
-        const message = messageInput.value;
-
-        if (username && message) {
-            await sendMessage(username, message);
-            messageInput.value = ''; // Clear the input
-            fetchMessages(); // Refresh the chat
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-    });
 
-    // Initial fetch of messages
-    fetchMessages();
-    setInterval(fetchMessages, 5000); // Refresh every 5 seconds
-</script>
+        function init() {
+            for (let i = 0; i < 100; i++) { // Number of particles
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
 
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                // Collision detection with profile picture
+                const profilePic = document.getElementById('profilePic');
+                const rect = profilePic.getBoundingClientRect();
+                if (particle.x > rect.left && particle.x < rect.right && particle.y > rect.top && particle.y < rect.bottom) {
+                    particle.y += 10; // Roll off the profile picture
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
