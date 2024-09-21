@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lemon's Website</title>
     <style>
-        /* Basic Reset */
         body, html {
             margin: 0;
             padding: 0;
@@ -15,13 +14,12 @@
             overflow-x: hidden;
         }
 
-        /* Top Bar */
         .top-bar {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #444; /* Lighter grey color */
-            padding: 10px 0;
+            background-color: #444;
+            padding: 15px 0;
             text-align: center;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -30,47 +28,32 @@
 
         .glowing-lemon {
             font-size: 2.5em;
-            color: #ffff66; /* Yellow color */
+            color: #ffff66;
             text-shadow: 0 0 10px rgba(255, 255, 102, 0.5), 0 0 20px rgba(255, 255, 102, 0.5);
-            animation: glow 1.5s infinite alternate;
             margin: 0;
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px rgba(255, 255, 102, 0.5), 0 0 20px rgba(255, 255, 102, 0.5);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(255, 255, 102, 1), 0 0 30px rgba(255, 255, 102, 1);
-            }
-        }
-
-        /* Content */
         .content {
-            margin-top: 80px; /* Space below the top bar */
+            margin-top: 80px;
             padding: 20px;
-            text-align: center;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
             background-color: #282828;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.3s, color 0.3s;
+            text-align: center;
         }
 
         h2 {
             color: #ffff66;
-            margin-bottom: 20px;
         }
 
         p {
             font-size: 1.1em;
             line-height: 1.6;
-            margin-bottom: 20px;
         }
 
-        /* Social Links */
         .social-links {
             margin-top: 30px;
         }
@@ -86,7 +69,6 @@
             transform: scale(1.2);
         }
 
-        /* Footer */
         .footer {
             margin-top: 50px;
             text-align: center;
@@ -94,19 +76,23 @@
             color: #bbb;
         }
 
-        /* Falling Dots (Particles) */
         .dot {
             position: absolute;
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: yellow;
             opacity: 0.8;
-            z-index: 1;
-            pointer-events: none; /* Ensure clicks go through to other elements */
+            z-index: 1001;
+            pointer-events: none;
+            animation: fall linear forwards;
         }
 
-        /* Settings Button */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
         .settings-btn {
             position: fixed;
             bottom: 20px;
@@ -127,7 +113,6 @@
             background-color: #555;
         }
 
-        /* Settings Menu */
         .settings-menu {
             position: fixed;
             bottom: 80px;
@@ -160,16 +145,17 @@
     <div class="top-bar" id="topBar">
         <h1 class="glowing-lemon" id="lemonTitle">🍋 Lemon 🍋</h1>
     </div>
+
     <div class="content" id="content">
         <h2>About Me</h2>
         <p>
-            Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community. 
+            Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
             I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
         </p>
         <p>
-            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals.
-            Feel free to check out my social media links below and reach out to me!
+            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals. Feel free to check out my social media links below!
         </p>
+        
         <div class="social-links">
             <a href="https://www.youtube.com" target="_blank">
                 <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
@@ -185,11 +171,11 @@
             </a>
         </div>
     </div>
+
     <div class="footer">
         <p>© 2024 Lemon. All rights reserved.</p>
     </div>
 
-    <!-- Settings Button and Menu -->
     <button class="settings-btn" id="settingsBtn">⚙️</button>
     <div class="settings-menu" id="settingsMenu">
         <label for="bgColor">Background Color:</label>
@@ -203,24 +189,21 @@
     </div>
 
     <script>
-        // Function to create yellow particles
         function createParticles(x, y) {
             for (let i = 0; i < 10; i++) {
                 const dot = document.createElement("div");
                 dot.className = "dot";
-                dot.style.left = `${x + (Math.random() * 20 - 10)}px`; // Spread particles
-                dot.style.top = `${y + (Math.random() * 20 - 10)}px`;
-                dot.style.animationDuration = `${Math.random() * 1 + 1}s`; // Random speed
+                dot.style.left = `${x + (Math.random() * 20 - 10)}px`;
+                dot.style.top = `${y}px`;
+                dot.style.backgroundColor = Math.random() < 0.5 ? 'yellow' : 'white'; // Randomly choose color
+                dot.style.animationDuration = `${Math.random() * 2 + 1}s`; // Random fall duration
                 document.body.appendChild(dot);
-                
-                // Remove dot after animation
                 setTimeout(() => {
                     dot.remove();
                 }, 2000);
             }
         }
 
-        // Click event for the Lemon title and top bar
         const lemonTitle = document.getElementById('lemonTitle');
         const topBar = document.getElementById('topBar');
 
@@ -232,20 +215,19 @@
             createParticles(event.clientX, event.clientY);
         });
 
-        // Falling dots
         const dotInterval = setInterval(() => {
             const dot = document.createElement('div');
             dot.classList.add('dot');
             dot.style.left = `${Math.random() * window.innerWidth}px`;
-            dot.style.animationDuration = `${Math.random() * 2 + 3}s`;
+            dot.style.top = '0';
+            dot.style.backgroundColor = Math.random() < 0.5 ? 'yellow' : 'white'; // Random color
+            dot.style.animationDuration = `${Math.random() * 3 + 2}s`;
             document.body.appendChild(dot);
-
             setTimeout(() => {
                 dot.remove();
             }, 5000);
         }, 300);
 
-        // Settings functionality
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsMenu = document.getElementById('settingsMenu');
         const bgColor = document.getElementById('bgColor');
@@ -253,27 +235,22 @@
         const contentColor = document.getElementById('contentColor');
         const textColor = document.getElementById('textColor');
 
-        // Toggle settings menu
         settingsBtn.addEventListener('click', () => {
             settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'block' : 'none';
         });
 
-        // Change background color
         bgColor.addEventListener('input', () => {
             document.body.style.backgroundColor = bgColor.value;
         });
 
-        // Change banner color
         bannerColor.addEventListener('input', () => {
             topBar.style.backgroundColor = bannerColor.value;
         });
 
-        // Change content background color
         contentColor.addEventListener('input', () => {
             document.getElementById('content').style.backgroundColor = contentColor.value;
         });
 
-        // Change text color
         textColor.addEventListener('input', () => {
             document.body.style.color = textColor.value;
             document.querySelector('.glowing-lemon').style.color = textColor.value;
