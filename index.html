@@ -5,257 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lemon's Website</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
+        body {
+            background-color: #121212;
+            color: white;
             font-family: Arial, sans-serif;
-            background-color: #121212; /* Dark background */
-            color: #f0f0f0; /* Light text */
-            overflow-x: hidden;
-            position: relative;
         }
-
         .top-bar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: #1a1a1a; /* Darker banner */
-            padding: 15px 0;
-            text-align: center;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-        }
-
-        .glowing-lemon {
-            font-size: 2.5em;
-            color: #ffd700; /* Bright yellow */
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
-            margin: 0;
-        }
-
-        .content {
-            margin-top: 80px;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-            background-color: #1e1e1e; /* Dark content background */
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        h2 {
-            color: #ffcc00; /* Gold headings */
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 20px 0;
-            border: 3px solid #ffd700; /* Yellow border */
-        }
-
-        .social-links {
-            margin-top: 30px;
-        }
-
-        .social-links img {
-            width: 50px;
-            height: 50px;
-            margin: 0 15px;
-            transition: transform 0.3s;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-        }
-
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #aaa;
-        }
-
-        .dot {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 1001;
-        }
-
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        .settings-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #4caf50; /* Green settings button */
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 1002;
-        }
-
-        .settings-btn:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-
-        .settings-menu {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
             background-color: #333;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .glowing-lemon {
+            color: yellow;
+            font-size: 2em;
+            text-shadow: 0 0 20px yellow;
+            cursor: pointer;
+        }
+        .chat-container {
+            margin-top: 30px;
             padding: 20px;
+            background-color: #1e1e1e;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 1001;
         }
-
-        .settings-menu label {
-            display: block;
-            margin: 10px 0;
-            color: #fff;
-        }
-
-        .settings-menu input {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-            border: 1px solid #444;
+        .chat-box {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            background-color: #333;
+            padding: 10px;
             border-radius: 5px;
+        }
+        .chat-input {
+            display: flex;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
             background-color: #555;
             color: #fff;
+        }
+        .chat-input button {
+            padding: 10px;
+            margin-left: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <div class="top-bar" id="topBar">
-        <h1 class="glowing-lemon" id="lemonTitle">🍋 Lemon 🍋</h1>
+    <div class="top-bar">
+        <span class="glowing-lemon" id="lemonEmoji">🍋</span>
+    </div>
+    
+    <div class="content">
+        <h1>Welcome to My Website!</h1>
+        <p>This is a clean and simple website.</p>
+        <!-- Add your other content here -->
     </div>
 
-    <div class="content" id="content">
-        <h2>About Me</h2>
-        <img src="standard.gif" alt="Profile Picture" class="profile-pic" id="profilePic">
-        <p>
-            Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
-            I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
-        </p>
-        <p>
-            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals. Feel free to check out my social media links below!
-        </p>
-        
-        <div class="social-links">
-            <a href="https://www.youtube.com" target="_blank">
-                <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
-            </a>
-            <a href="https://discord.com" target="_blank">
-                <img src="https://www.freepnglogos.com/uploads/discord-logo-png/concours-discord-cartes-voeux-fortnite-france-6.png" alt="Discord">
-            </a>
-            <a href="https://www.reddit.com" target="_blank">
-                <img src="https://images.squarespace-cdn.com/content/v1/5c5554d316b64061c6f8a20d/1630949829757-WXNOUZ8R4QQCXMIY4YMG/What-Is-The-Reddit-Logo-Called.png" alt="Reddit">
-            </a>
-            <a href="https://github.com" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
-            </a>
+    <div class="chat-container" id="chatContainer">
+        <h2>Live Chat</h2>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input">
+            <input type="text" id="username" placeholder="Enter your username" />
+            <input type="text" id="message" placeholder="Type your message" disabled />
+            <button id="sendBtn" disabled>Send</button>
         </div>
     </div>
 
-    <div class="footer">
-        <p>© 2024 Lemon. All rights reserved.</p>
-    </div>
-
-    <button class="settings-btn" id="settingsBtn">⚙️</button>
-    <div class="settings-menu" id="settingsMenu">
-        <label for="bgColor">Background Color:</label>
-        <input type="color" id="bgColor" value="#121212">
-        <label for="bannerColor">Banner Color:</label>
-        <input type="color" id="bannerColor" value="#1a1a1a">
-        <label for="contentColor">Content Background Color:</label>
-        <input type="color" id="contentColor" value="#1e1e1e">
-        <label for="textColor">Text Color:</label>
-        <input type="color" id="textColor" value="#f0f0f0">
-    </div>
-
     <script>
-        function createParticles(x, y, color = 'yellow') {
-            for (let i = 0; i < 15; i++) {
-                const dot = document.createElement("div");
-                dot.className = "dot";
-                dot.style.left = `${x + (Math.random() * 20 - 10)}px`;
-                dot.style.top = `${y}px`;
-                dot.style.backgroundColor = color;
-                dot.style.width = `${Math.random() * 10 + 5}px`;
-                dot.style.height = dot.style.width;
-                dot.style.transition = 'transform 0.5s, opacity 0.5s';
-                document.body.appendChild(dot);
-                setTimeout(() => {
-                    const angle = Math.random() * 2 * Math.PI;
-                    const distance = Math.random() * 200;
-                    dot.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-                    dot.style.opacity = '0';
-                }, 0);
-                setTimeout(() => {
-                    dot.remove();
-                }, 1000);
+        const chatBox = document.getElementById('chatBox');
+        const usernameInput = document.getElementById('username');
+        const messageInput = document.getElementById('message');
+        const sendBtn = document.getElementById('sendBtn');
+
+        usernameInput.addEventListener('input', () => {
+            if (usernameInput.value.trim() !== '') {
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+            } else {
+                messageInput.disabled = true;
+                sendBtn.disabled = true;
             }
-        }
-
-        function explodeParticles(x, y) {
-            createParticles(x, y);
-        }
-
-        const profilePic = document.getElementById('profilePic');
-        profilePic.addEventListener('mouseover', (e) => {
-            const rect = profilePic.getBoundingClientRect();
-            explodeParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
         });
 
-        const lemonTitle = document.getElementById('lemonTitle');
-        lemonTitle.addEventListener('click', (e) => {
+        sendBtn.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            const username = usernameInput.value.trim();
+            if (message && !/\b(swear1|swear2|swear3)\b/i.test(message)) { // Replace with actual swear words
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${username}: ${message}`;
+                chatBox.appendChild(messageElement);
+                messageInput.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+            } else if (/\b(swear1|swear2|swear3)\b/i.test(message)) {
+                alert("Please refrain from using inappropriate language.");
+            }
+        });
+
+        // Particle effect for clicking the lemon emoji
+        const lemonEmoji = document.getElementById('lemonEmoji');
+        lemonEmoji.addEventListener('click', function(e) {
             explodeParticles(e.clientX, e.clientY);
         });
 
-        const settingsBtn = document.getElementById('settingsBtn');
-        const settingsMenu = document.getElementById('settingsMenu');
+        function explodeParticles(x, y) {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.position = 'absolute';
+                particle.style.backgroundColor = 'yellow';
+                particle.style.width = '5px';
+                particle.style.height = '5px';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                document.body.appendChild(particle);
 
-        settingsBtn.addEventListener('click', () => {
-            settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'block' : 'none';
-        });
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = Math.random() * 100;
+                const particleX = Math.cos(angle) * distance;
+                const particleY = Math.sin(angle) * distance;
 
-        document.getElementById('bgColor').addEventListener('input', function() {
-            document.body.style.backgroundColor = this.value;
-        });
-        document.getElementById('bannerColor').addEventListener('input', function() {
-            document.querySelector('.top-bar').style.backgroundColor = this.value;
-        });
-        document.getElementById('contentColor').addEventListener('input', function() {
-            document.querySelector('.content').style.backgroundColor = this.value;
-        });
-        document.getElementById('textColor').addEventListener('input', function() {
-            document.body.style.color = this.value;
-            document.querySelector('.glowing-lemon').style.color = this.value;
-            document.querySelector('.footer').style.color = this.value;
-        });
+                particle.animate([
+                    { transform: 'translate(0, 0)', opacity: 1 },
+                    { transform: `translate(${particleX}px, ${particleY}px)`, opacity: 0 }
+                ], {
+                    duration: 1000,
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
     </script>
 </body>
 </html>
