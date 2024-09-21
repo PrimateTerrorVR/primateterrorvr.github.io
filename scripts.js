@@ -1,78 +1,52 @@
 <script>
-    const ownerCode = 'LemonRed'; // The code for accessing owner features
+    const chatBox = document.getElementById("chatBox");
+    const usernameInput = document.getElementById("username");
+    const messageInput = document.getElementById("message");
+    const sendBtn = document.getElementById("sendBtn");
 
-    // Load chat messages from local storage on page load
-    window.onload = function() {
-        const chatBox = document.getElementById('chatBox');
-        const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+    // Function to fetch messages from GitHub
+    async function fetchMessages() {
+        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/messages.json');
+        const messages = await response.json();
+        chatBox.innerHTML = '';
         messages.forEach(msg => {
             chatBox.innerHTML += `<strong>${msg.username}:</strong> ${msg.message}<br>`;
         });
-    };
+    }
 
-    document.getElementById('enterCode').addEventListener('click', function() {
-        const codeInput = document.getElementById('codeInput').value;
-        if (codeInput === ownerCode) {
-            document.getElementById('settingsBtn').style.display = 'block'; // Show settings button
-            document.getElementById('ownerMenu').style.display = 'block'; // Show owner menu
-        } else {
-            alert('Invalid code!'); // Alert if code is incorrect
+    // Function to send a message to GitHub
+    async function sendMessage(username, message) {
+        const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/messages.json');
+        const messages = await response.json();
+        const updatedMessages = [...messages, { username, message }];
+        const putResponse = await fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO_NAME/contents/messages.json', {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token YOUR_GITHUB_TOKEN',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Update messages',
+                content: btoa(JSON.stringify(updatedMessages)),
+                sha: 'CURRENT_SHA' // Replace with the current SHA of messages.json
+            })
+        });
+        return putResponse.ok;
+    }
+
+    // Event listener for sending messages
+    sendBtn.addEventListener('click', async () => {
+        const username = usernameInput.value;
+        const message = messageInput.value;
+
+        if (username && message) {
+            await sendMessage(username, message);
+            messageInput.value = '';
+            fetchMessages(); // Refresh messages after sending
         }
-        document.getElementById('codeInput').value = ''; // Clear the input
     });
 
-    document.getElementById('settingsBtn').addEventListener('click', function() {
-        const menu = document.getElementById('settingsMenu');
-        menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
-    });
-
-    document.getElementById('bgColor').addEventListener('input', function() {
-        document.body.style.backgroundColor = this.value;
-    });
-
-    document.getElementById('bannerColor').addEventListener('input', function() {
-        document.getElementById('topBar').style.backgroundColor = this.value;
-    });
-
-    document.getElementById('contentColor').addEventListener('input', function() {
-        document.getElementById('content').style.backgroundColor = this.value;
-    });
-
-    document.getElementById('textColor').addEventListener('input', function() {
-        document.body.style.color = this.value;
-    });
-
-    document.getElementById('username').addEventListener('input', function() {
-        document.getElementById('message').disabled = this.value.trim() === '';
-        document.getElementById('sendBtn').disabled = this.value.trim() === '';
-    });
-
-    document.getElementById('sendBtn').addEventListener('click', function() {
-        const chatBox = document.getElementById('chatBox');
-        const username = document.getElementById('username').value;
-        const message = document.getElementById('message').value;
-
-        // Save message to local storage
-        const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        messages.push({ username, message });
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
-
-        // Display the new message
-        chatBox.innerHTML += `<strong>${username}:</strong> ${message}<br>`;
-        document.getElementById('message').value = '';
-    });
-
-    document.getElementById('sendOwnerMessage').addEventListener('click', function() {
-        const chatBox = document.getElementById('chatBox');
-        const ownerMessage = document.getElementById('ownerMessage').value;
-
-        // Save owner message to local storage
-        const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        messages.push({ username: 'Owner', message: ownerMessage });
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
-
-        // Display the new owner message
-        chatBox.innerHTML += `<strong>Owner:</strong> ${ownerMessage}<br>`;
-        document.getElementById('ownerMessage').value = '';
-    });
+    // Initial fetch of messages
+    fetchMessages();
+    setInterval(fetchMessages, 5000); // Refresh messages every 5 seconds
 </script>
