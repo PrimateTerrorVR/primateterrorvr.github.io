@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemon's Website</title>
+    <style>
+        /* Basic Reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #000;
+            padding: 20px 0;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .glowing-lemon {
+            font-size: 3em;
+            color: #ffff66; /* Yellow color */
+            text-shadow: 0 0 10px rgba(255, 255, 102, 0.5), 0 0 20px rgba(255, 255, 102, 0.5);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 102, 0.5), 0 0 20px rgba(255, 255, 102, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 102, 1), 0 0 30px rgba(255, 255, 102, 1);
+            }
+        }
+
+        /* Content */
+        .content {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            color: #ffff66;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Falling Snow */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            font-size: 1.5em;
+            color: #ffffff;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h1 class="glowing-lemon">🍋 Lemon 🍋</h1>
+    </div>
+    <div class="content">
+        <p>Welcome to my website! Check out my social media and learn more about me.</p>
+        <ul>
+            <li><a href="https://twitter.com">Twitter</a></li>
+            <li><a href="https://github.com">GitHub</a></li>
+            <li><a href="about.html">About Me</a></li>
+        </ul>
+    </div>
+    <script>
+        // Falling snowflakes
+        const numberOfSnowflakes = 30;
+        for (let i = 0; i < numberOfSnowflakes; i++) {
+            let snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed
+            snowflake.textContent = Math.random() < 0.1 ? '🍋' : '❄️'; // 10% chance of lemon emoji
+            document.body.appendChild(snowflake);
+        }
+    </script>
+</body>
+</html>
