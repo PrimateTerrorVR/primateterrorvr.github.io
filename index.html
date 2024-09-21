@@ -9,8 +9,8 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #fff;
+            background-color: #f0f0f0;
+            color: #333;
             overflow-x: hidden;
             position: relative;
         }
@@ -19,7 +19,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #444;
+            background-color: #6b8e23;
             padding: 15px 0;
             text-align: center;
             z-index: 1000;
@@ -40,14 +40,14 @@
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            background-color: #282828;
+            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         h2 {
-            color: #ffff66;
+            color: #6b8e23;
             margin-bottom: 10px;
         }
 
@@ -62,6 +62,7 @@
             height: 150px;
             border-radius: 50%;
             margin: 20px 0;
+            border: 3px solid #6b8e23;
         }
 
         .social-links {
@@ -83,7 +84,7 @@
             margin-top: 50px;
             text-align: center;
             font-size: 0.9em;
-            color: #bbb;
+            color: #aaa;
         }
 
         .dot {
@@ -92,9 +93,8 @@
             height: 8px;
             border-radius: 50%;
             opacity: 0.8;
-            z-index: 1001;
             pointer-events: none;
-            animation: fall linear forwards;
+            z-index: 1001;
         }
 
         @keyframes fall {
@@ -103,11 +103,16 @@
             }
         }
 
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
         .settings-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #444;
+            background-color: #6b8e23;
             border: none;
             border-radius: 50%;
             width: 50px;
@@ -120,7 +125,7 @@
         }
 
         .settings-btn:hover {
-            background-color: #555;
+            background-color: #7cb342;
         }
 
         .settings-menu {
@@ -157,7 +162,7 @@
     </div>
 
     <div class="content" id="content">
-        <img src="standard.gif" alt="Profile Picture" class="profile-pic">
+        <img src="standard.gif" alt="Profile Picture" class="profile-pic" id="profilePic">
         <h2>About Me</h2>
         <p>
             Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community.
@@ -190,23 +195,23 @@
     <button class="settings-btn" id="settingsBtn">⚙️</button>
     <div class="settings-menu" id="settingsMenu">
         <label for="bgColor">Background Color:</label>
-        <input type="color" id="bgColor" value="#1e1e1e">
+        <input type="color" id="bgColor" value="#f0f0f0">
         <label for="bannerColor">Banner Color:</label>
-        <input type="color" id="bannerColor" value="#444">
+        <input type="color" id="bannerColor" value="#6b8e23">
         <label for="contentColor">Content Background Color:</label>
-        <input type="color" id="contentColor" value="#282828">
+        <input type="color" id="contentColor" value="#ffffff">
         <label for="textColor">Text Color:</label>
-        <input type="color" id="textColor" value="#ffffff">
+        <input type="color" id="textColor" value="#333333">
     </div>
 
     <script>
-        function createParticles(x, y) {
+        function createParticles(x, y, color = 'yellow') {
             for (let i = 0; i < 10; i++) {
                 const dot = document.createElement("div");
                 dot.className = "dot";
                 dot.style.left = `${x + (Math.random() * 20 - 10)}px`;
                 dot.style.top = `${y}px`;
-                dot.style.backgroundColor = Math.random() < 0.5 ? 'yellow' : 'white';
+                dot.style.backgroundColor = color;
                 dot.style.animationDuration = `${Math.random() * 2 + 1}s`;
                 document.body.appendChild(dot);
                 setTimeout(() => {
@@ -215,57 +220,57 @@
             }
         }
 
+        function explodeParticles(x, y) {
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement("div");
+                dot.className = "dot";
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+                dot.style.backgroundColor = 'yellow';
+                dot.style.width = `${Math.random() * 10 + 5}px`;
+                dot.style.height = dot.style.width;
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = Math.random() * 100;
+                dot.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                dot.style.animation = 'explode 0.5s forwards';
+                document.body.appendChild(dot);
+                setTimeout(() => {
+                    dot.remove();
+                }, 500);
+            }
+        }
+
+        const profilePic = document.getElementById('profilePic');
+        profilePic.addEventListener('mouseover', (e) => {
+            const rect = profilePic.getBoundingClientRect();
+            explodeParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+
         const lemonTitle = document.getElementById('lemonTitle');
-        const topBar = document.getElementById('topBar');
-
-        lemonTitle.addEventListener('click', (event) => {
-            createParticles(event.clientX, event.clientY);
+        lemonTitle.addEventListener('click', (e) => {
+            explodeParticles(e.clientX, e.clientY);
         });
-
-        topBar.addEventListener('click', (event) => {
-            createParticles(event.clientX, event.clientY);
-        });
-
-        const dotInterval = setInterval(() => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            dot.style.left = `${Math.random() * window.innerWidth}px`;
-            dot.style.top = '0';
-            dot.style.backgroundColor = Math.random() < 0.5 ? 'yellow' : 'white';
-            dot.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            document.body.appendChild(dot);
-            setTimeout(() => {
-                dot.remove();
-            }, 5000);
-        }, 300);
 
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsMenu = document.getElementById('settingsMenu');
-        const bgColor = document.getElementById('bgColor');
-        const bannerColor = document.getElementById('bannerColor');
-        const contentColor = document.getElementById('contentColor');
-        const textColor = document.getElementById('textColor');
 
         settingsBtn.addEventListener('click', () => {
             settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'block' : 'none';
         });
 
-        bgColor.addEventListener('input', () => {
-            document.body.style.backgroundColor = bgColor.value;
+        document.getElementById('bgColor').addEventListener('input', function() {
+            document.body.style.backgroundColor = this.value;
         });
-
-        bannerColor.addEventListener('input', () => {
-            topBar.style.backgroundColor = bannerColor.value;
+        document.getElementById('bannerColor').addEventListener('input', function() {
+            document.querySelector('.top-bar').style.backgroundColor = this.value;
         });
-
-        contentColor.addEventListener('input', () => {
-            document.getElementById('content').style.backgroundColor = contentColor.value;
+        document.getElementById('contentColor').addEventListener('input', function() {
+            document.querySelector('.content').style.backgroundColor = this.value;
         });
-
-        textColor.addEventListener('input', () => {
-            document.body.style.color = textColor.value;
-            document.querySelector('.glowing-lemon').style.color = textColor.value;
-            document.querySelector('.footer').style.color = textColor.value;
+        document.getElementById('textColor').addEventListener('input', function() {
+            document.body.style.color = this.value;
+            document.querySelector('.glowing-lemon').style.color = this.value;
+            document.querySelector('.footer').style.color = this.value;
         });
     </script>
 </body>
