@@ -29,9 +29,16 @@
 
         .glowing-lemon {
             font-size: 2.5em;
-            color: #ffd700; /* Bright yellow */
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 5s linear infinite;
             margin: 0;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         .content {
@@ -84,14 +91,6 @@
             text-align: center;
             font-size: 0.9em;
             color: #aaa;
-        }
-
-        .dot {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 1001;
         }
 
         .chat-container {
@@ -159,7 +158,7 @@
             background-color: #45a049; /* Darker green on hover */
         }
 
-        .settings-menu {
+        .settings-menu, .owner-menu {
             position: fixed;
             bottom: 80px;
             right: 20px;
@@ -171,13 +170,15 @@
             z-index: 1001;
         }
 
-        .settings-menu label {
+        .settings-menu label,
+        .owner-menu label {
             display: block;
             margin: 10px 0;
             color: #fff;
         }
 
-        .settings-menu input {
+        .settings-menu input,
+        .owner-menu input {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
@@ -246,50 +247,59 @@
         <input type="color" id="textColor" value="#f0f0f0">
     </div>
 
+    <button class="settings-btn" id="ownerBtn" style="bottom: 80px;">👑</button>
+    <div class="owner-menu" id="ownerMenu">
+        <h3>Owner Menu</h3>
+        <label for="ownerMessage">Owner Message:</label>
+        <input type="text" id="ownerMessage" placeholder="Type a message as owner">
+        <button id="sendOwnerMessage">Send</button>
+    </div>
+
     <script>
-        const chatBox = document.getElementById("chatBox");
-        const usernameInput = document.getElementById("username");
-        const messageInput = document.getElementById("message");
-        const sendBtn = document.getElementById("sendBtn");
-        const settingsBtn = document.getElementById("settingsBtn");
-        const settingsMenu = document.getElementById("settingsMenu");
-        
-        usernameInput.addEventListener("input", () => {
-            messageInput.disabled = usernameInput.value.trim() === "";
-            sendBtn.disabled = usernameInput.value.trim() === "" || messageInput.value.trim() === "";
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            const menu = document.getElementById('settingsMenu');
+            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
         });
 
-        messageInput.addEventListener("input", () => {
-            sendBtn.disabled = usernameInput.value.trim() === "" || messageInput.value.trim() === "";
+        document.getElementById('ownerBtn').addEventListener('click', function() {
+            const menu = document.getElementById('ownerMenu');
+            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
         });
 
-        sendBtn.addEventListener("click", () => {
-            const username = usernameInput.value.trim();
-            const message = messageInput.value.trim();
-            const filteredMessage = message.replace(/(?:\b(?:fuck|shit|damn|bitch)\b)/gi, "***"); // Simple swear filter
-
-            if (username && filteredMessage) {
-                const chatMessage = document.createElement("div");
-                chatMessage.textContent = `${username}: ${filteredMessage}`;
-                chatBox.appendChild(chatMessage);
-                messageInput.value = "";
-                messageInput.focus();
-                sendBtn.disabled = true;
-            }
+        document.getElementById('bgColor').addEventListener('input', function() {
+            document.body.style.backgroundColor = this.value;
         });
 
-        settingsBtn.addEventListener("click", () => {
-            const isVisible = settingsMenu.style.display === "block";
-            settingsMenu.style.display = isVisible ? "none" : "block";
+        document.getElementById('bannerColor').addEventListener('input', function() {
+            document.getElementById('topBar').style.backgroundColor = this.value;
         });
 
-        document.querySelectorAll(".settings-menu input[type='color']").forEach(input => {
-            input.addEventListener("input", (event) => {
-                document.body.style.backgroundColor = document.getElementById("bgColor").value;
-                document.getElementById("topBar").style.backgroundColor = document.getElementById("bannerColor").value;
-                document.getElementById("content").style.backgroundColor = document.getElementById("contentColor").value;
-                document.body.style.color = document.getElementById("textColor").value;
-            });
+        document.getElementById('contentColor').addEventListener('input', function() {
+            document.getElementById('content').style.backgroundColor = this.value;
+        });
+
+        document.getElementById('textColor').addEventListener('input', function() {
+            document.body.style.color = this.value;
+        });
+
+        document.getElementById('username').addEventListener('input', function() {
+            document.getElementById('message').disabled = this.value.trim() === '';
+            document.getElementById('sendBtn').disabled = this.value.trim() === '';
+        });
+
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            const chatBox = document.getElementById('chatBox');
+            const username = document.getElementById('username').value;
+            const message = document.getElementById('message').value;
+            chatBox.innerHTML += `<strong>${username}:</strong> ${message}<br>`;
+            document.getElementById('message').value = '';
+        });
+
+        document.getElementById('sendOwnerMessage').addEventListener('click', function() {
+            const chatBox = document.getElementById('chatBox');
+            const ownerMessage = document.getElementById('ownerMessage').value;
+            chatBox.innerHTML += `<strong>Owner:</strong> ${ownerMessage}<br>`;
+            document.getElementById('ownerMessage').value = '';
         });
     </script>
 </body>
