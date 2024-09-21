@@ -1,1 +1,4 @@
-[]
+[
+    {"username": "User1", "message": "Hello!"},
+    {"username": "User2", "message": "Hi there!"}
+]
