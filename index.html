@@ -24,12 +24,12 @@
             text-align: center;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
         }
 
         .glowing-lemon {
             font-size: 2.5em;
             background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            background-size: 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: rainbow 5s linear infinite;
@@ -138,9 +138,29 @@
             background-color: #45a049;
         }
 
-        .settings-btn {
+        .code-input {
             position: fixed;
             bottom: 20px;
+            left: 20px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .code-input input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #555;
+            color: #fff;
+            margin-right: 5px;
+        }
+
+        .settings-btn {
+            position: fixed;
+            bottom: 80px;
             right: 20px;
             background-color: #4caf50; /* Green settings button */
             border: none;
@@ -152,13 +172,10 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
             z-index: 1002;
+            display: none; /* Hidden by default */
         }
 
-        .settings-btn:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-
-        .settings-menu, .owner-menu {
+        .settings-menu {
             position: fixed;
             bottom: 80px;
             right: 20px;
@@ -166,19 +183,17 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            display: none;
+            display: none; /* Hidden by default */
             z-index: 1001;
         }
 
-        .settings-menu label,
-        .owner-menu label {
+        .settings-menu label {
             display: block;
             margin: 10px 0;
             color: #fff;
         }
 
-        .settings-menu input,
-        .owner-menu input {
+        .settings-menu input {
             width: 100%;
             padding: 5px;
             margin-top: 5px;
@@ -186,6 +201,14 @@
             border-radius: 5px;
             background-color: #555;
             color: #fff;
+        }
+
+        .owner-menu {
+            display: none; /* Hidden by default */
+        }
+
+        .owner-menu h3 {
+            color: #ffcc00; /* Gold heading */
         }
     </style>
 </head>
@@ -235,19 +258,24 @@
         <p>© 2024 Lemon. All rights reserved.</p>
     </div>
 
+    <div class="code-input">
+        <input type="text" id="codeInput" placeholder="Enter owner code" />
+        <button id="enterCode">Enter</button>
+    </div>
+
     <button class="settings-btn" id="settingsBtn">⚙️</button>
     <div class="settings-menu" id="settingsMenu">
+        <h3>Settings</h3>
         <label for="bgColor">Background Color:</label>
         <input type="color" id="bgColor" value="#121212">
         <label for="bannerColor">Banner Color:</label>
         <input type="color" id="bannerColor" value="#1a1a1a">
-        <label for="contentColor">Content Background Color:</label>
+        <label for="contentColor">Content Color:</label>
         <input type="color" id="contentColor" value="#1e1e1e">
         <label for="textColor">Text Color:</label>
         <input type="color" id="textColor" value="#f0f0f0">
     </div>
 
-    <button class="settings-btn" id="ownerBtn" style="bottom: 80px;">👑</button>
     <div class="owner-menu" id="ownerMenu">
         <h3>Owner Menu</h3>
         <label for="ownerMessage">Owner Message:</label>
@@ -256,13 +284,21 @@
     </div>
 
     <script>
-        document.getElementById('settingsBtn').addEventListener('click', function() {
-            const menu = document.getElementById('settingsMenu');
-            menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
+        const ownerCode = 'LemonRed'; // The code for accessing owner features
+
+        document.getElementById('enterCode').addEventListener('click', function() {
+            const codeInput = document.getElementById('codeInput').value;
+            if (codeInput === ownerCode) {
+                document.getElementById('settingsBtn').style.display = 'block'; // Show settings button
+                document.getElementById('ownerMenu').style.display = 'block'; // Show owner menu
+            } else {
+                alert('Invalid code!'); // Alert if code is incorrect
+            }
+            document.getElementById('codeInput').value = ''; // Clear the input
         });
 
-        document.getElementById('ownerBtn').addEventListener('click', function() {
-            const menu = document.getElementById('ownerMenu');
+        document.getElementById('settingsBtn').addEventListener('click', function() {
+            const menu = document.getElementById('settingsMenu');
             menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
         });
 
