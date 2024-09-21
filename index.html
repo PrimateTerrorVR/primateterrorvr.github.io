@@ -158,15 +158,37 @@
                 this.size = Math.random() * 5 + 2; // Size between 2 and 7
                 this.speedY = Math.random() * 1 + 1; // Speed between 1 and 2
                 this.color = 'rgba(255, 255, 255, 0.8)'; // White color
+                this.speedX = Math.random() < 0.5 ? -1 : 1; // Random horizontal speed
             }
 
             update() {
                 this.y += this.speedY;
+
+                // Check for bounce
+                const profilePic = document.getElementById('profilePic');
+                const rect = profilePic.getBoundingClientRect();
+
+                // Check collision with the profile picture
+                if (this.x > rect.left && this.x < rect.right && this.y > rect.top && this.y < rect.bottom) {
+                    this.bounceAway(rect);
+                }
+
+                // Reset particle position if it goes off-screen
                 if (this.y > canvas.height) {
                     this.y = 0; // Reset to top
                     this.x = Math.random() * canvas.width; // Random x position
                 }
+
                 this.draw();
+            }
+
+            bounceAway(rect) {
+                // Calculate angle of collision
+                const angle = Math.atan2(this.y - (rect.top + rect.height / 2), this.x - (rect.left + rect.width / 2));
+                this.speedX = Math.cos(angle) * 2; // Bounce away horizontally
+                this.speedY = -Math.abs(Math.sin(angle) * 2); // Bounce away vertically
+                this.x += this.speedX;
+                this.y += this.speedY;
             }
 
             draw() {
@@ -187,12 +209,6 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(particle => {
                 particle.update();
-                // Collision detection with profile picture
-                const profilePic = document.getElementById('profilePic');
-                const rect = profilePic.getBoundingClientRect();
-                if (particle.x > rect.left && particle.x < rect.right && particle.y > rect.top && particle.y < rect.bottom) {
-                    particle.y += 10; // Roll off the profile picture
-                }
             });
             requestAnimationFrame(animate);
         }
