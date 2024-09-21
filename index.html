@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             background-color: #1e1e1e;
             color: #fff;
-            overflow: hidden;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         /* Top Bar */
@@ -46,28 +46,21 @@
 
         /* Content */
         .content {
-            margin-top: 80px;
-            text-align: center;
+            margin-top: 100px; /* Space below the top bar */
             padding: 20px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin: 10px 0;
-        }
-
-        a {
+        h2 {
             color: #ffff66;
-            text-decoration: none;
-            font-size: 1.2em;
         }
 
-        a:hover {
-            text-decoration: underline;
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
         }
 
         /* Social Links */
@@ -121,12 +114,15 @@
         <h1 class="glowing-lemon">🍋 Lemon 🍋</h1>
     </div>
     <div class="content">
-        <h2>Welcome to Lemon's Website!</h2>
-        <p>Explore my social media and learn more about me below:</p>
-        <ul>
-            <li><a href="#">About Me</a></li>
-        </ul>
-
+        <h2>About Me</h2>
+        <p>
+            Hi! I'm Lemon, a passionate developer and content creator. I love experimenting with code, creating fun projects, and sharing my knowledge with the community. 
+            I have a strong interest in web development and enjoy working with HTML, CSS, JavaScript, and other technologies.
+        </p>
+        <p>
+            In my free time, I enjoy playing video games, exploring new tech, and connecting with like-minded individuals.
+            Feel free to check out my social media links below and reach out to me!
+        </p>
         <div class="social-links">
             <a href="https://www.youtube.com" target="_blank">
                 <img src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png" alt="YouTube">
@@ -136,6 +132,9 @@
             </a>
             <a href="https://www.reddit.com" target="_blank">
                 <img src="https://images.squarespace-cdn.com/content/v1/5c5554d316b64061c6f8a20d/1630949829757-WXNOUZ8R4QQCXMIY4YMG/What-Is-The-Reddit-Logo-Called.png" alt="Reddit">
+            </a>
+            <a href="https://github.com" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
             </a>
         </div>
     </div>
