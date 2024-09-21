@@ -21,17 +21,18 @@
             top: 0;
             width: 100%;
             background-color: #000;
-            padding: 20px 0;
+            padding: 15px 0;
             text-align: center;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         .glowing-lemon {
-            font-size: 3em;
+            font-size: 2.5em;
             color: #ffff66; /* Yellow color */
             text-shadow: 0 0 10px rgba(255, 255, 102, 0.5), 0 0 20px rgba(255, 255, 102, 0.5);
             animation: glow 1.5s infinite alternate;
+            margin: 0;
         }
 
         @keyframes glow {
@@ -45,8 +46,9 @@
 
         /* Content */
         .content {
-            margin-top: 100px;
+            margin-top: 80px;
             text-align: center;
+            padding: 20px;
         }
 
         ul {
@@ -61,20 +63,34 @@
         a {
             color: #ffff66;
             text-decoration: none;
+            font-size: 1.2em;
         }
 
         a:hover {
             text-decoration: underline;
         }
 
-        /* Falling Snow */
-        .snowflake {
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #bbb;
+        }
+
+        /* Falling Dots */
+        .dot {
             position: fixed;
             top: -10px;
-            font-size: 1.5em;
-            color: #ffffff;
+            font-size: 10px;
+            border-radius: 50%;
+            background-color: white;
             animation: fall linear infinite;
             opacity: 0.8;
+        }
+
+        .dot.yellow {
+            background-color: #ffff66;
         }
 
         @keyframes fall {
@@ -89,23 +105,28 @@
         <h1 class="glowing-lemon">🍋 Lemon 🍋</h1>
     </div>
     <div class="content">
-        <p>Welcome to my website! Check out my social media and learn more about me.</p>
+        <h2>Welcome to Lemon's Website!</h2>
+        <p>Explore my social media and learn more about me below:</p>
         <ul>
-            <li><a href="https://twitter.com">Twitter</a></li>
-            <li><a href="https://github.com">GitHub</a></li>
-            <li><a href="about.html">About Me</a></li>
+            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com" target="_blank">GitHub</a></li>
+            <li><a href="#">About Me</a></li>
         </ul>
     </div>
+    <div class="footer">
+        <p>© 2024 Lemon. All rights reserved.</p>
+    </div>
     <script>
-        // Falling snowflakes
-        const numberOfSnowflakes = 30;
-        for (let i = 0; i < numberOfSnowflakes; i++) {
-            let snowflake = document.createElement("div");
-            snowflake.className = "snowflake";
-            snowflake.style.left = `${Math.random() * 100}vw`;
-            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random speed
-            snowflake.textContent = Math.random() < 0.1 ? '🍋' : '❄️'; // 10% chance of lemon emoji
-            document.body.appendChild(snowflake);
+        // Falling dots
+        const numberOfDots = 50;
+        for (let i = 0; i < numberOfDots; i++) {
+            let dot = document.createElement("div");
+            dot.className = "dot";
+            if (Math.random() < 0.1) dot.classList.add("yellow"); // 10% chance of being a yellow dot
+            dot.style.left = `${Math.random() * 100}vw`;
+            dot.style.animationDuration = `${Math.random() * 5 + 3}s`; // Random speed
+            dot.style.width = dot.style.height = `${Math.random() * 5 + 3}px`; // Random size
+            document.body.appendChild(dot);
         }
     </script>
 </body>
